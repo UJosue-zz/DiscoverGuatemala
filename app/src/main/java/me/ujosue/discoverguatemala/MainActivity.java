@@ -11,15 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ByteArrayPool;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,6 +24,7 @@ import org.json.JSONObject;
 import java.io.File;
 
 import me.ujosue.discoverguatemala.bean.Usuario;
+import me.ujosue.discoverguatemala.methods.Imagen;
 import me.ujosue.discoverguatemala.volley.VolleyController;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
                             Usuario.deleteAll(Usuario.class);
                             if(listausuario.length()>0){
                                 JSONObject jusuario = listausuario.getJSONObject(0);
+                                String rutaFoto = "Sin fotografía";
+                                try{
+                                    Bitmap imag = (Bitmap) jusuario.get("foto");
+                                    rutaFoto = Imagen.guardarImagen(getApplicationContext(), "usuario" + jusuario.getInt("id_usuario"), imag);
+                                }catch (Exception ex){
+                                    Log.e("Error ", ex.toString());
+                                }
                                 Log.d("Usuario ", jusuario.toString());
                                 Usuario usuarioLogeado = new Usuario(
                                         jusuario.getInt("id_Usuario"),
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                                         jusuario.getString("nacionalidad"),
                                         jusuario.getString("correo"),
                                         jusuario.getString("nick"),
-                                        "", //Ruta de la foto (aún no se como guardar imágenes)
+                                        rutaFoto, //Ruta de la foto (aún no se como guardar imágenes)
                                         response.getString("token"),
                                         response.getString("exp"),
                                         jusuario.getInt("id_Rol")

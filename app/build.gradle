@@ -27,5 +27,4 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.mcxiaoke.volley:library:1.0.19'    //Conexion con el web service
     compile 'com.github.satyan:sugar:1.4'   //ORM para SQLite
-    compile 'com.squareup.picasso:picasso:2.5.2'    //Para guardar las imágenes
 }
